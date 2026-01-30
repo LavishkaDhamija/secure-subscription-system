@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const bcrypt = require('bcrypt');
 
 // @route   POST api/auth/register
 // @desc    Register user
@@ -16,13 +17,17 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ msg: 'User already exists' });
         }
 
-        // Placeholder: Password Hashing should happen here
-        // user = new User({ username, email, password: hash(password) })
+        console.log('[HASHING] Plain Password provided:', password);
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        console.log('[HASHING] Hashed Password to store:', hashedPassword);
 
         user = new User({
             username,
             email,
-            password // Plain text for now as per requirements
+            password: hashedPassword
         });
 
         await user.save();
@@ -51,7 +56,8 @@ router.post('/login', async (req, res) => {
         }
 
         // Placeholder: Compare hashed password
-        const isMatch = (password === user.password);
+        console.log('[AUTH] Verifying password match...');
+        const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
             return res.status(400).json({ msg: 'Invalid Credentials' });
