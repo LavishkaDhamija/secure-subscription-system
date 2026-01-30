@@ -1,0 +1,18 @@
+node_modules/
+.env
+.env.*
+*.log
+
+# security related
+keys/
+certs/
+private/
+uploads/
+
+# build folders
+dist/
+build/
+
+# OS junk
+.DS_Store
+Thumbs.db

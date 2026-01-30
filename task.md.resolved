@@ -1,0 +1,31 @@
+# Task List: Subscription & Feature Access Platform
+
+- [ ] Project Initialization
+    - [ ] Create `backend` directory and initialize Node.js project
+    - [ ] Create `frontend` directory and initialize React project
+    - [ ] Install dependencies for backend (express, mongoose, cors, dotenv, jsonwebtoken)
+    - [ ] Install dependencies for frontend (react-router-dom, axios)
+
+- [ ] Backend Implementation
+    - [ ] Setup MongoDB connection
+    - [ ] Create User, SubscriptionPlan, Feature models
+    - [ ] Implement Authentication API (Register, Login, Logout placeholder)
+    - [ ] Implement Subscription Management API
+    - [ ] Implement Feature Access API
+    - [ ] Implement Admin Dashboard API
+    - [ ] Seed dummy data
+
+- [ ] Frontend Implementation
+    - [ ] Setup React Router
+    - [ ] Create Context/State for Auth
+    - [ ] Implement Login/Register Pages
+    - [ ] Implement Dashboard (User)
+    - [ ] Implement Subscription Page
+    - [ ] Implement Feature Pages (Free vs Premium)
+    - [ ] Implement Admin Dashboard
+    - [ ] Connect Frontend to Backend
+
+- [ ] Verification
+    - [ ] Verify Authentication flow
+    - [ ] Verify Subscription upgrade flow
+    - [ ] Verify Role-based access control

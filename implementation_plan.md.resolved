@@ -1,0 +1,54 @@
+# Implementation Plan - Subscription & Feature Access Platform
+
+## Goal Description
+Build a full-stack web application with React, Node.js, and MongoDB that manages user subscriptions and feature access. The system supports Admin, Premium, and Free users.
+
+## User Review Required
+> [!IMPORTANT]
+> Security is intentionally basic as per requirements. No real payment gateway will be implemented. Password security and MFA will be placeholders.
+
+## Proposed Changes
+
+### Backend (Node.js + Express)
+Structure:
+- `server.js`: Entry point
+- `config/db.js`: MongoDB connection
+- `models/`: Mongoose schemas (User, SubscriptionPlan, Feature)
+- `routes/`: API routes (auth, subscriptions, admin)
+- `controllers/`: Logic for routes
+- `middleware/`: Auth middleware (JWT verification)
+
+#### [NEW] [backend structure]
+- `server.js`
+- `models/User.js`
+- `models/SubscriptionPlan.js`
+- `models/Feature.js`
+- `routes/authRoutes.js`
+- `routes/subscriptionRoutes.js`
+- `routes/adminRoutes.js`
+
+### Frontend (React)
+Structure:
+- `App.js`: Main routing
+- `context/AuthContext.js`: Global auth state
+- `pages/`: Login, Register, Dashboard, Subscription, PremiumContent, AdminDashboard
+- `components/`: Navbar, ProtectedRoute
+
+#### [NEW] [frontend structure]
+- `src/App.jsx`
+- `src/pages/Login.jsx`
+- `src/pages/Register.jsx`
+- `src/pages/UserDashboard.jsx`
+- `src/pages/SubscriptionPage.jsx`
+- `src/pages/PremiumContent.jsx`
+- `src/pages/AdminDashboard.jsx`
+
+## Verification Plan
+
+### Automated Tests
+- None planned as per "Keep logic simple" and "Basic UI + API only". Manual verification will be primary.
+
+### Manual Verification
+1.  **Auth**: Register a new user, Login, Check JWT token in storage, Logout.
+2.  **Roles**: Login as Free user, try to access Premium content (should fail/redirect). Login as Premium, access Premium content. Login as Admin, view dashboard.
+3.  **Subscription**: Click "Subscribe" on Premium plan, verify user status updates (mocked).
