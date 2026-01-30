@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require('../middleware/authMiddleware');
 const User = require('../models/User');
 const { createHash, signData, verifySignature } = require('../utils/digitalSignature');
+const { encodeToken } = require('../utils/tokenEncoding');
 
 // @route   POST api/subscriptions/subscribe
 // @desc    Subscribe to a plan (Upgrade/Downgrade)
@@ -45,6 +46,25 @@ router.post('/subscribe', auth, async (req, res) => {
         // 3. Store Signature & Data
         user.digitalSignature = signature;
         user.signatureData = dataToSign;
+
+        // --- BASE64 ENTITLEMENT TOKEN IMPLEMENTATION ---
+        // Only generate token if Premium
+        if (user.subscriptionPlan === 'PREMIUM') {
+            const featureId = 'PREMIUM_CONTENT';
+            const entitlementString = `${user.id}|${featureId}|${user.subscriptionPlan}|${Date.now()}`;
+
+            const encodedToken = encodeToken(entitlementString);
+
+            console.log('\n--- [BASE64 TOKEN GENERATION] ---');
+            console.log('Raw Entitlement String:', entitlementString);
+            console.log('Encoded Token (Base64):', encodedToken);
+            console.log('---------------------------------\n');
+
+            user.entitlementToken = encodedToken;
+        } else {
+            // Remove token if downgrading
+            user.entitlementToken = undefined;
+        }
 
         await user.save();
 

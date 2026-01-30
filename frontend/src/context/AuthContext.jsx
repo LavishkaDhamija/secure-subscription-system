@@ -64,9 +64,15 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (email, password) => {
-        const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-        // NOTE: We do NOT set token here anymore. We wait for OTP.
-        return res.data;
+        try {
+            console.log('[FRONTEND] Sending login request to backend...');
+            const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+            console.log('[FRONTEND] Login response received:', res.data);
+            return res.data;
+        } catch (err) {
+            console.error('[FRONTEND] Login request failed:', err);
+            throw err;
+        }
     };
 
     const verifyOtp = async (userId, otp) => {
@@ -80,9 +86,15 @@ export const AuthProvider = ({ children }) => {
     };
 
     const register = async (username, email, password) => {
-        const res = await axios.post('http://localhost:5000/api/auth/register', { username, email, password });
-        // No auto-login on register anymore.
-        return res.data;
+        try {
+            console.log('[FRONTEND] Sending register request...');
+            const res = await axios.post('http://localhost:5000/api/auth/register', { username, email, password });
+            console.log('[FRONTEND] Register response:', res.data);
+            return res.data;
+        } catch (err) {
+            console.error('[FRONTEND] Register request failed:', err);
+            throw err;
+        }
     };
 
     const logout = () => {

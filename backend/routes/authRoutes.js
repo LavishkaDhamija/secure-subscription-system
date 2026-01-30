@@ -10,11 +10,13 @@ const bcrypt = require('bcrypt');
 router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
 
+    console.log('[REGISTER] Payload:', { username, email, password: '***' });
     try {
         let user = await User.findOne({ email });
 
         if (user) {
-            return res.status(400).json({ msg: 'User already exists' });
+            console.log('[REGISTER] FOUND EXISTING USER:', user._id, user.email);
+            return res.status(400).json({ msg: `User already exists (ID: ${user._id})` });
         }
 
         console.log('[HASHING] Plain Password provided:', password);
@@ -30,11 +32,13 @@ router.post('/register', async (req, res) => {
             password: hashedPassword
         });
 
+        console.log('[REGISTER] Saving user to DB...');
         await user.save();
+        console.log('[REGISTER] User saved ID:', user.id);
 
         res.json({ msg: 'User registered successfully. Please login with MFA.' });
     } catch (err) {
-        console.error(err.message);
+        console.error('[REGISTER ERROR]', err);
         res.status(500).send('Server error');
     }
 });
@@ -47,17 +51,20 @@ router.post('/register', async (req, res) => {
 // @access  Public
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
+    console.log('[LOGIN] Attempting login for:', email);
 
     try {
         let user = await User.findOne({ email });
 
         if (!user) {
+            console.log('[LOGIN] User not found during login');
             return res.status(400).json({ msg: 'Invalid Credentials' });
         }
 
         // Placeholder: Compare hashed password
         console.log('[AUTH] Verifying password match...');
         const isMatch = await bcrypt.compare(password, user.password);
+        console.log('[AUTH] Password match result:', isMatch);
 
         if (!isMatch) {
             return res.status(400).json({ msg: 'Invalid Credentials' });
@@ -70,11 +77,13 @@ router.post('/login', async (req, res) => {
         user.otpExpires = Date.now() + 300000; // 5 minutes
         await user.save();
 
-        console.log(`[MFA] OTP for ${user.email}: ${otp}`);
+        console.error('\n==================================================');
+        console.error(`[MFA] OTP for ${user.email}: ${otp}`);
+        console.error('==================================================\n');
 
         res.json({ msg: 'OTP sent', userId: user.id, otpRequired: true });
     } catch (err) {
-        console.error(err.message);
+        console.error('[LOGIN ERROR]', err.message);
         res.status(500).send('Server error');
     }
 });

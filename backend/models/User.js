@@ -17,7 +17,8 @@ const userSchema = new mongoose.Schema({
   otp: { type: String }, // Store hashed OTP ideally, but for simplicity: plain
   otpExpires: { type: Date },
   digitalSignature: { type: String }, // Stores the RSA signature of the subscription record
-  signatureData: { type: String }     // Stores the original string that was signed
+  signatureData: { type: String },    // Stores the original string that was signed
+  entitlementToken: { type: String }  // Stores Base64 encoded entitlement token
 });
 
 // Pre-save hook to ensure Uppercase consistency for Role and SubscriptionPlan
