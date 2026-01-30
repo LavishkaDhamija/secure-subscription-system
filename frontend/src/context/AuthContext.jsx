@@ -44,8 +44,12 @@ export const AuthProvider = ({ children }) => {
             try {
                 const res = await axios.get('http://localhost:5000/api/auth/user');
                 setUser(res.data);
-                // Initiate key exchange if we have a user
-                performKeyExchange();
+
+                // Only perform key exchange if we don't have one, or if we want to ensure fresh key on reload
+                // For now, let's keep it simple: if we have a user, ensure we have a key.
+                if (!sessionKey) {
+                    performKeyExchange();
+                }
             } catch (error) {
                 console.error('Auth verification failed', error);
                 localStorage.removeItem('token');

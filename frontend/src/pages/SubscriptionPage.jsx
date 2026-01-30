@@ -12,11 +12,16 @@ const SubscriptionPage = () => {
             setMessage(res.data.msg);
 
             // Refresh user state to reflect new role immediately
-            if (refreshUser) await refreshUser();
+            if (refreshUser) {
+                console.log('Refreshing user state...');
+                await refreshUser();
+                console.log('User state refreshed.');
+            }
 
             alert('Subscription Updated! Access rights updated.');
         } catch (err) {
             setMessage('Error updating subscription');
+            console.error(err);
         }
     };
 

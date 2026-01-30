@@ -37,6 +37,7 @@ app.use('/api/crypto', cryptoRoutes);
 
 // Share cryptoRoutes for other routes to access session keys
 app.set('cryptoRoutes', cryptoRoutes);
+app.set('serverKeys', serverKeys);
 
 // Data Migration & Normalization
 const migrateData = async () => {
