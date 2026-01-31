@@ -33,6 +33,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/subscriptions', require('./routes/subscriptionRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/content', require('./routes/contentRoutes'));
+app.use('/api/license', require('./routes/licenseRoutes'));
 app.use('/api/crypto', cryptoRoutes);
 
 // Share cryptoRoutes for other routes to access session keys

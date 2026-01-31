@@ -2,8 +2,67 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/authMiddleware');
 const User = require('../models/User');
+const License = require('../models/License');
+const crypto = require('crypto');
 const { createHash, signData, verifySignature } = require('../utils/digitalSignature');
 const { encodeToken } = require('../utils/tokenEncoding');
+
+// @route   POST api/subscriptions/request-premium
+// @desc    Request upgrade to Premium (Creates pending license)
+// @access  Private
+router.post('/request-premium', auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) return res.status(404).json({ msg: 'User not found' });
+
+        if (user.role === 'ADMIN') {
+            return res.status(403).json({ msg: 'Admins cannot request user licenses.' });
+        }
+
+        if (user.role === 'PREMIUM') {
+            return res.status(400).json({ msg: 'You are already a Premium member.' });
+        }
+
+        // Check for existing pending/approved license
+        const existingLicense = await License.findOne({
+            userId: user.id,
+            status: { $in: ['pending', 'approved'] }
+        });
+
+        if (existingLicense) {
+            if (existingLicense.status === 'pending') {
+                return res.status(400).json({ msg: 'Premium request already submitted. Awaiting admin approval.' });
+            }
+            if (existingLicense.status === 'approved') {
+                // Should ideally match role check, but just in case
+                return res.status(400).json({ msg: 'License already approved. Please refresh your session.' });
+            }
+        }
+
+        // Generate Secure License ID
+        const licenseId = crypto.randomBytes(16).toString('hex');
+        const encodedLicenseId = Buffer.from(licenseId).toString('base64');
+
+        const newLicense = new License({
+            licenseId,
+            encodedLicenseId,
+            userId: user.id,
+            planType: 'PREMIUM',
+            status: 'pending',
+            issuedAt: Date.now(),
+            approvedBy: null,
+            digitalSignature: null
+        });
+
+        await newLicense.save();
+
+        res.json({ msg: 'Premium request submitted for admin approval', licenseId: newLicense.licenseId });
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 
 // @route   POST api/subscriptions/subscribe
 // @desc    Subscribe to a plan (Upgrade/Downgrade)
@@ -13,6 +72,15 @@ router.post('/subscribe', auth, async (req, res) => {
 
     try {
         const user = await User.findById(req.user.id);
+
+        if (user.role === 'ADMIN') {
+            return res.status(403).json({ msg: 'Admins cannot modify subscription plans.' });
+        }
+
+        // Prevent Downgrade to FREE
+        if (planName.toUpperCase() === 'FREE' && user.role === 'PREMIUM') {
+            return res.status(400).json({ msg: 'Downgrades to Free plan are currently disabled.' });
+        }
 
         // Simulate payment processing... matched
 

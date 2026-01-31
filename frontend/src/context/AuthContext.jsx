@@ -43,6 +43,7 @@ export const AuthProvider = ({ children }) => {
             axios.defaults.headers.common['x-auth-token'] = token;
             try {
                 const res = await axios.get('http://localhost:5000/api/auth/user');
+                console.log('[AUTH] User refreshed:', res.data.role);
                 setUser(res.data);
 
                 // Only perform key exchange if we don't have one, or if we want to ensure fresh key on reload
@@ -60,7 +61,10 @@ export const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        checkUser();
+        // FORCE LOGOUT on every reload/restart for testing
+        console.log('[AUTH] App Reloaded: Clearing session to force Login.');
+        logout();
+        setLoading(false);
     }, []);
 
     const login = async (email, password) => {

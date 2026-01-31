@@ -41,11 +41,40 @@ router.get('/premium', auth, requirePremiumSubscription, async (req, res) => {
     }
 
     const content = {
-        msg: 'Welcome to the Premium Content!',
+        msg: 'Secure Premium Command Center',
         content: [
-            { id: 1, title: 'Exclusive Market Analysis', body: 'The market is trending upwards due to...' },
-            { id: 2, title: 'Advanced Security Reports', body: 'New vulnerabilities found in...' },
-            { id: 3, title: 'Priority Support Channel', body: 'Contact us at vip@support.com' }
+            {
+                id: 1,
+                title: 'Global Cyber Threat Forecast 2026',
+                category: 'Threat Intelligence',
+                body: 'Exclusive analysis of emerging AI-driven attack vectors targeting financial sectors. Includes localized heatmaps.',
+                image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=600',
+                date: 'Oct 24, 2025'
+            },
+            {
+                id: 2,
+                title: 'High-Frequency Trading Algorithms',
+                category: 'Market Alpha',
+                body: 'Source code and documentation for our proprietary HFT production-ready modules. Optimized for nanosecond execution.',
+                image: 'https://images.unsplash.com/photo-1611974765270-ca1258634369?auto=format&fit=crop&q=80&w=600',
+                date: 'Jan 15, 2026'
+            },
+            {
+                id: 3,
+                title: 'Enterprise Zero-Trust Blueprint',
+                category: 'Architecture',
+                body: 'Complete implementation guide for transitioning legacy networks to a Zero-Trust Architecture (ZTA).',
+                image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=600',
+                date: 'Jan 28, 2026'
+            },
+            {
+                id: 4,
+                title: 'Crypto-Asset Volatility Report',
+                category: 'Financial Analysis',
+                body: 'Deep dive into liquidity pools and potential risks in the upcoming quarter. Premium subscriber access only.',
+                image: 'https://images.unsplash.com/photo-1621761191319-c6fb62004040?auto=format&fit=crop&q=80&w=600',
+                date: 'Jan 30, 2026'
+            }
         ]
     };
 

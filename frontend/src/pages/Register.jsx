@@ -16,31 +16,73 @@ const Register = () => {
         e.preventDefault();
         try {
             await register(username, email, password);
-            navigate('/dashboard');
+            alert('Registration Successful. Please Login.');
+            navigate('/login');
         } catch (err) {
             setError(err.response?.data?.msg || 'Registration failed');
         }
     };
 
     return (
-        <div style={{ padding: '20px' }}>
-            <h1>Register</h1>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <form onSubmit={onSubmit}>
-                <div>
-                    <label>Username: </label>
-                    <input type="text" name="username" value={username} onChange={onChange} required />
+        <div className="form-container">
+            <div className="card">
+                <div className="text-center mb-4">
+                    <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Create Account</h2>
+                    <p className="text-muted">Join the secure platform today</p>
                 </div>
-                <div>
-                    <label>Email: </label>
-                    <input type="email" name="email" value={email} onChange={onChange} required />
-                </div>
-                <div>
-                    <label>Password: </label>
-                    <input type="password" name="password" value={password} onChange={onChange} required />
-                </div>
-                <button type="submit">Register</button>
-            </form>
+
+                {error && (
+                    <div style={{ background: '#fee2e2', color: '#991b1b', padding: '0.75rem', borderRadius: '0.5rem', marginBottom: '1.5rem', fontSize: '0.9rem' }}>
+                        {error}
+                    </div>
+                )}
+
+                <form onSubmit={onSubmit}>
+                    <div className="form-group">
+                        <label className="form-label">Username</label>
+                        <input
+                            className="form-input"
+                            type="text"
+                            name="username"
+                            value={username}
+                            onChange={onChange}
+                            placeholder="johndoe"
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label className="form-label">Email Address</label>
+                        <input
+                            className="form-input"
+                            type="email"
+                            name="email"
+                            value={email}
+                            onChange={onChange}
+                            placeholder="name@company.com"
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label className="form-label">Password</label>
+                        <input
+                            className="form-input"
+                            type="password"
+                            name="password"
+                            value={password}
+                            onChange={onChange}
+                            placeholder="Create a strong password"
+                            required
+                        />
+                    </div>
+                    <button type="submit" className="btn btn-primary btn-block">
+                        Sign Up
+                    </button>
+                </form>
+            </div>
+
+            <p className="text-center text-muted">
+                Already have an account? <a href="/login" style={{ color: 'var(--primary)', fontWeight: 600 }}>Login</a>
+            </p>
         </div>
     );
 };
