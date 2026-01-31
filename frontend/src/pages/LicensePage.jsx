@@ -73,7 +73,7 @@ const LicensePage = () => {
             </div>
 
             {msg && (
-                <div style={{ background: '#d1fae5', color: '#065f46', padding: '1rem', borderRadius: '0.5rem', marginBottom: '1.5rem' }}>
+                <div className="alert alert-success">
                     {msg}
                 </div>
             )}
@@ -107,7 +107,7 @@ const LicensePage = () => {
 
                     <div className="mt-4">
                         <label className="form-label text-muted">Encoded License Token (Base64)</label>
-                        <div style={{ background: '#111827', color: '#10b981', padding: '1rem', borderRadius: '0.5rem', fontFamily: 'monospace', wordBreak: 'break-all', fontSize: '0.85rem' }}>
+                        <div className="code-block">
                             {license.encodedLicenseId}
                         </div>
                         <p className="text-muted" style={{ fontSize: '0.8rem', marginTop: '5px' }}>

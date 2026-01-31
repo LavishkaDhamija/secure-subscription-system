@@ -50,6 +50,7 @@ router.post('/approve/:licenseId', auth, requireAdminRole, async (req, res) => {
         license.digitalSignature = generateLicenseSignature(license);
 
         await license.save();
+        console.log("License saved:", license._id);
 
         // 3. Upgrade User Role
         const user = await User.findById(license.userId);

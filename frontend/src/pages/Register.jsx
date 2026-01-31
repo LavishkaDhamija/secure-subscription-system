@@ -32,7 +32,7 @@ const Register = () => {
                 </div>
 
                 {error && (
-                    <div style={{ background: '#fee2e2', color: '#991b1b', padding: '0.75rem', borderRadius: '0.5rem', marginBottom: '1.5rem', fontSize: '0.9rem' }}>
+                    <div className="alert alert-danger">
                         {error}
                     </div>
                 )}

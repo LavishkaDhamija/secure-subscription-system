@@ -55,6 +55,7 @@ router.post('/request-premium', auth, async (req, res) => {
         });
 
         await newLicense.save();
+        console.log("License saved:", newLicense._id);
 
         res.json({ msg: 'Premium request submitted for admin approval', licenseId: newLicense.licenseId });
 

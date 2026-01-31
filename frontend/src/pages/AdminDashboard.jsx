@@ -54,71 +54,95 @@ const AdminDashboard = () => {
     const pendingLicenses = licenses.filter(l => l.status === 'pending');
 
     return (
-        <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
-            <h1>Admin Dashboard</h1>
+        <div>
+            <div className="mb-4">
+                <h1>Admin Dashboard</h1>
+                <p className="text-muted">System Overview & License Management</p>
+            </div>
 
-            {msg && <div style={{ marginBottom: '20px', padding: '10px', background: '#d1fae5', color: '#065f46', borderRadius: '5px' }}>{msg}</div>}
+            {msg && <div className="card" style={{ padding: '1rem', background: 'var(--success-bg)', color: 'var(--success-text)', border: 'none' }}>{msg}</div>}
 
-            <div style={{ marginBottom: '40px' }}>
-                <h3>Pending License Requests ({pendingLicenses.length})</h3>
+            <div className="card">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                    <h3>Pending License Requests</h3>
+                    <span className="badge badge-yellow">{pendingLicenses.length} Pending</span>
+                </div>
+
                 {pendingLicenses.length === 0 ? (
-                    <p className="text-muted">No pending requests.</p>
+                    <p className="text-muted">No pending requests awaiting approval.</p>
                 ) : (
-                    <table border="1" cellPadding="10" style={{ borderCollapse: 'collapse', width: '100%', marginBottom: '20px', borderColor: '#e5e7eb' }}>
-                        <thead style={{ background: '#f9fafb' }}>
+                    <div style={{ overflowX: 'auto' }}>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Email</th>
+                                    <th>Plan</th>
+                                    <th>License ID</th>
+                                    <th>Issued At</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {pendingLicenses.map(l => (
+                                    <tr key={l._id}>
+                                        <td style={{ fontWeight: 500 }}>{l.userId?.username || 'Unknown'}</td>
+                                        <td className="text-muted">{l.userId?.email || 'Unknown'}</td>
+                                        <td><span className="badge badge-blue">{l.planType}</span></td>
+                                        <td style={{ fontFamily: 'monospace', fontSize: '0.85rem' }}>{l.licenseId}</td>
+                                        <td>{new Date(l.issuedAt).toLocaleDateString()}</td>
+                                        <td>
+                                            <button
+                                                onClick={() => approveLicense(l.licenseId)}
+                                                className="btn btn-primary"
+                                                style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}
+                                            >
+                                                Approve
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
+
+            <div className="card">
+                <h3 style={{ marginBottom: '1.5rem' }}>All Users</h3>
+                <div style={{ overflowX: 'auto' }}>
+                    <table>
+                        <thead>
                             <tr>
-                                <th>User</th>
+                                <th>Username</th>
                                 <th>Email</th>
-                                <th>Plan</th>
-                                <th>License ID</th>
-                                <th>Issued At</th>
-                                <th>Action</th>
+                                <th>Role</th>
+                                <th>Subscription</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {pendingLicenses.map(l => (
-                                <tr key={l._id}>
-                                    <td>{l.userId?.username || 'Unknown'}</td>
-                                    <td>{l.userId?.email || 'Unknown'}</td>
-                                    <td>{l.planType}</td>
-                                    <td style={{ fontFamily: 'monospace' }}>{l.licenseId}</td>
-                                    <td>{new Date(l.issuedAt).toLocaleDateString()}</td>
+                            {users.map(u => (
+                                <tr key={u._id}>
+                                    <td style={{ fontWeight: 500 }}>{u.username}</td>
+                                    <td className="text-muted">{u.email}</td>
                                     <td>
-                                        <button
-                                            onClick={() => approveLicense(l.licenseId)}
-                                            style={{ background: '#10b981', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}
-                                        >
-                                            Approve & Sign
-                                        </button>
+                                        <span className={`badge ${u.role === 'ADMIN' ? 'badge-purple' : u.role === 'PREMIUM' ? 'badge-blue' : 'badge-gray'}`}>
+                                            {u.role}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {u.subscriptionPlan === 'PREMIUM' ? (
+                                            <span className="badge badge-blue">PREMIUM</span>
+                                        ) : (
+                                            <span className="badge badge-gray">FREE</span>
+                                        )}
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
-                )}
+                </div>
             </div>
-
-            <h3>All Users</h3>
-            <table border="1" cellPadding="10" style={{ borderCollapse: 'collapse', width: '100%', borderColor: '#e5e7eb' }}>
-                <thead style={{ background: '#f9fafb' }}>
-                    <tr>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Subscription</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map(u => (
-                        <tr key={u._id}>
-                            <td>{u.username}</td>
-                            <td>{u.email}</td>
-                            <td>{u.role}</td>
-                            <td>{u.subscriptionPlan}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
         </div>
     );
 };

@@ -14,8 +14,8 @@ const UserDashboard = () => {
             if (!user) return;
             // Default based on user role
             let badge = user.subscriptionPlan === 'PREMIUM'
-                ? { text: 'PREMIUM ACTIVE', class: 'badge-green' }
-                : { text: 'FREE PLAN', class: 'badge-blue' }; // Changed to blue/grey
+                ? { text: 'PREMIUM ACTIVE', class: 'badge-blue' }
+                : { text: 'FREE PLAN', class: 'badge-gray' };
 
             try {
                 // Check for pending license
@@ -80,7 +80,7 @@ const UserDashboard = () => {
                         <div>
                             <h3 style={{ marginBottom: '5px' }}>Profile Status</h3>
                             <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                                <span className={`badge ${user.role === 'ADMIN' ? 'badge-yellow' : 'badge-blue'}`}>
+                                <span className={`badge ${user.role === 'ADMIN' ? 'badge-purple' : user.role === 'PREMIUM' ? 'badge-blue' : 'badge-gray'}`}>
                                     {user.role}
                                 </span>
                                 <span className={`badge ${statusBadge.class}`}>
@@ -133,13 +133,13 @@ const UserDashboard = () => {
 
             {/* Premium Content Banner */}
             {user.subscriptionPlan === 'PREMIUM' && (
-                <div className="card" style={{ background: 'linear-gradient(to right, #4f46e5, #ec4899)', color: 'white' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div className="card" style={{ background: 'var(--primary)', color: 'white', border: 'none' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                         <div>
-                            <h2 style={{ color: 'white', fontSize: '1.5rem' }}>Premium Access Unlocked</h2>
+                            <h2 style={{ color: 'white', fontSize: '1.5rem', marginBottom: '0.5rem' }}>Premium Access Unlocked</h2>
                             <p style={{ opacity: 0.9 }}>Access your exclusive secure content now.</p>
                         </div>
-                        <Link to="/premium" className="btn" style={{ background: 'white', color: '#4f46e5' }}>
+                        <Link to="/premium" className="btn" style={{ background: 'white', color: 'var(--primary)' }}>
                             Access Content <ExternalLink size={16} />
                         </Link>
                     </div>
