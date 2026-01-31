@@ -65,8 +65,8 @@ const PremiumContent = () => {
 
     if (isDecrypting || !content) return (
         <div className="flex-center" style={{ flexDirection: 'column', height: '60vh' }}>
-            <div className="spinner" style={{ width: '60px', height: '60px', borderTopColor: '#f472b6', borderLeftColor: '#6366f1' }}></div>
-            <h3 style={{ marginTop: '20px', background: 'linear-gradient(to right, #6366f1, #ec4899)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            <div className="spinner" style={{ width: '60px', height: '60px' }}></div>
+            <h3 style={{ marginTop: '20px', color: 'var(--primary)' }}>
                 Decrypting Secure Channel...
             </h3>
         </div>
@@ -76,19 +76,19 @@ const PremiumContent = () => {
         <div style={{ animation: 'fadeIn 0.5s ease-out' }}>
             {/* Hero Section */}
             <div style={{
-                background: 'linear-gradient(135deg, #4f46e5 0%, #ec4899 100%)',
+                background: 'var(--primary)',
                 borderRadius: '1.5rem',
                 padding: '4rem 2rem',
                 color: 'white',
                 marginBottom: '3rem',
                 textAlign: 'center',
-                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                boxShadow: 'var(--shadow-md)',
                 position: 'relative',
                 overflow: 'hidden'
             }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'url("https://www.transparenttextures.com/patterns/cubes.png")', opacity: 0.1 }}></div>
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(45deg, rgba(82, 115, 142, 0.4) 0%, transparent 100%)', opacity: 0.3 }}></div>
                 <div style={{ position: 'relative', zIndex: 10 }}>
-                    <div style={{ display: 'inline-flex', padding: '8px 16px', background: 'rgba(255,255,255,0.2)', borderRadius: '20px', marginBottom: '1rem', backdropFilter: 'blur(5px)' }}>
+                    <div style={{ display: 'inline-flex', padding: '8px 16px', background: 'rgba(255,255,255,0.15)', borderRadius: '20px', marginBottom: '1rem', backdropFilter: 'blur(5px)' }}>
                         <Unlock size={16} style={{ marginRight: '8px' }} />
                         <span style={{ fontSize: '0.85rem', fontWeight: 'bold', letterSpacing: '1px' }}>SECURE CONNECTION ESTABLISHED</span>
                     </div>
@@ -112,9 +112,12 @@ const PremiumContent = () => {
                     }}>
                         {/* Image Header */}
                         <div style={{ height: '180px', overflow: 'hidden', position: 'relative' }}>
-                            <img src={item.image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                            <img src={item.id === 2 ? 'https://images.unsplash.com/photo-1642543492481-44e81e3914a7?auto=format&fit=crop&q=80&w=600' : item.image}
+                                alt={item.title}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
                                 onMouseOver={e => e.currentTarget.style.transform = 'scale(1.1)'}
                                 onMouseOut={e => e.currentTarget.style.transform = 'scale(1.0)'}
+                                onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=600'; }} // Fallback
                             />
                             <div style={{ position: 'absolute', top: '15px', right: '15px' }}>
                                 <span className="badge" style={{ background: 'rgba(0,0,0,0.6)', color: 'white', backdropFilter: 'blur(4px)' }}>
@@ -127,7 +130,7 @@ const PremiumContent = () => {
                         <div style={{ padding: '1.5rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                                 <span style={{ fontSize: '0.8rem', color: 'var(--text-light)', fontWeight: 600 }}>{item.date}</span>
-                                <Activity size={16} color="var(--success)" />
+                                <Activity size={16} color="var(--success-text)" />
                             </div>
                             <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem', lineHeight: 1.3 }}>{item.title}</h3>
                             <p className="text-muted" style={{ fontSize: '0.95rem', marginBottom: '1.5rem' }}>
